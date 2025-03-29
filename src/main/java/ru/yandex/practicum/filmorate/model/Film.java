@@ -22,7 +22,7 @@ public class Film {
     @Size(max = 200, message = "Описание фильма не должно превышать 200 символов")
     private String description;
 
-    @MinDate
+    @MinDate(message = "Дата релиза — не раньше 28 декабря 1895 года")
     private LocalDate releaseDate;
 
     @Positive(message = "Продолжительность фильма должна быть положительным числом")

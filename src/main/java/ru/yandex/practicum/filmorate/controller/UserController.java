@@ -23,6 +23,8 @@ public class UserController {
     public User create(@RequestBody @Valid User user) {
         log.info("Получен HTTP-запрос на создание пользователя: {}", user);
         user.setId(idCounter++);
+        user.getName(); // у меня до этого была реализована эта логика проверки (если пустой name, то логин)
+       // в самом классе User в Getter)
         idToUser.put(user.getId(), user);
         log.info("Успешно обработан HTTP-запрос на создание пользователя: {}", user);
         return user;
