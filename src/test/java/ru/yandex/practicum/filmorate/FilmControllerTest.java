@@ -39,7 +39,7 @@ public class FilmControllerTest {
         Film createdFilm  = filmController.create(film);
         List<Film> films = filmController.getAll();
         assertEquals(1, films.size(), "Сервер не вернул фильм");
-        assertEquals(createdFilm , films.get(0), "Созданный фильм не совпадает с полученным");
+        assertEquals(createdFilm, films.get(0), "Созданный фильм не совпадает с полученным");
     }
 
     @Test
