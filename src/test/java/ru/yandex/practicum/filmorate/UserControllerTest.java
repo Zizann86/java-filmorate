@@ -40,7 +40,7 @@ public class UserControllerTest {
         User createdUser  = userController.create(user);
         List<User> users = userController.getAll();
         assertEquals(2, users.size(), "Сервер не вернул всех пользователей");
-        assertEquals(createdUser , users.get(1), "Созданный пользователь не совпадает с полученным");
+        assertEquals(createdUser, users.get(1), "Созданный пользователь не совпадает с полученным");
     }
 
     @Test
