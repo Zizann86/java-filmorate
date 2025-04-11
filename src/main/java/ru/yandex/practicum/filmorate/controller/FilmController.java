@@ -14,18 +14,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private final FilmStorage filmStorage;
     private final FilmService filmService;
 
     public FilmController(@Autowired FilmService filmService, @Autowired FilmStorage filmStorage) {
         this.filmService = filmService;
-        this.filmStorage = filmStorage;
     }
 
     @PostMapping
     public Film create(@RequestBody @Valid Film film) {
         log.info("Получен HTTP-запрос на добавление фильма: {}", film);
-        Film createFilm = filmStorage.create(film);
+        Film createFilm = filmService.create(film);
         log.info("Успешно обработан HTTP-запрос на добавление фильма: {}", createFilm);
         return film;
     }
@@ -33,14 +31,14 @@ public class FilmController {
     @GetMapping
     public List<Film> getAll() {
         log.info("Получен HTTP-запрос на получение всех фильмов");
-        List<Film> allFilms = filmStorage.getAll();
+        List<Film> allFilms = filmService.getAll();
         return allFilms;
     }
 
     @PutMapping
     public Film update(@RequestBody Film film) {
         log.info("Получен HTTP-запрос на обновление фильма: {}", film);
-        Film updateFilm = filmStorage.update(film);
+        Film updateFilm = filmService.update(film);
         log.info("Успешно выполнен HTTP-запрос на обновление фильма: {}", updateFilm);
         return updateFilm;
     }
@@ -48,7 +46,7 @@ public class FilmController {
     @GetMapping("/{id}")
     public Film getById(@PathVariable Long id) {
         log.info("Получен HTTP-запрос на получение фильма по id: {}", id);
-        Film film = filmStorage.getFilmById(id);
+        Film film = filmService.getById(id);
         return film;
     }
 

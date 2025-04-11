@@ -83,4 +83,23 @@ public class UserService {
         return user;
     }
 
+    public User create(User user) {
+        log.info("Получен HTTP-запрос на создание пользователя: {}", user);
+        User createUser = userStorage.create(user);
+        log.info("Успешно обработан HTTP-запрос на создание пользователя: {}", user);
+        return createUser;
+    }
+
+    public List<User> getAll() {
+        log.info("Получен HTTP-запрос на получение всех пользователей");
+        List<User> allUsers = userStorage.getAll();
+        return allUsers;
+    }
+
+    public User update(User user) {
+        log.info("Получен HTTP-запрос на обновление пользователя: {}", user);
+        User updateUser = userStorage.update(user);
+        log.info("Успешно выполнен HTTP-запрос на обновление пользователя: {}", user);
+        return updateUser;
+    }
 }

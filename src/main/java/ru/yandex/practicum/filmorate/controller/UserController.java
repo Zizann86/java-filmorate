@@ -13,18 +13,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final UserStorage userStorage;
     private final UserService userService;
 
     public UserController(UserService userService, UserStorage userStorage) {
         this.userService = userService;
-        this.userStorage = userStorage;
     }
 
     @PostMapping
     public User create(@RequestBody @Valid User user) {
         log.info("Получен HTTP-запрос на создание пользователя: {}", user);
-        User createUser = userStorage.create(user);
+        User createUser = userService.create(user);
         log.info("Успешно обработан HTTP-запрос на создание пользователя: {}", user);
         return createUser;
     }
@@ -32,14 +30,14 @@ public class UserController {
     @GetMapping
     public List<User> getAll() {
         log.info("Получен HTTP-запрос на получение всех пользователей");
-        List<User> allUsers = userStorage.getAll();
+        List<User> allUsers = userService.getAll();
         return allUsers;
     }
 
     @PutMapping
     public User update(@RequestBody @Valid User user) {
         log.info("Получен HTTP-запрос на обновление пользователя: {}", user);
-        User updateUser = userStorage.update(user);
+        User updateUser = userService.update(user);
         log.info("Успешно выполнен HTTP-запрос на обновление пользователя: {}", user);
         return updateUser;
     }
@@ -47,7 +45,7 @@ public class UserController {
     @GetMapping("/{id}")
     public User getById(@PathVariable Long id) {
         log.info("Получен HTTP-запрос на получение пользователя по id: {}", id);
-        User user = userStorage.getById(id);
+        User user = userService.getUserById(id);
         return user;
     }
 
@@ -74,5 +72,4 @@ public class UserController {
         log.info("Получен HTTP-запрос на получение списка друзей у пользователя по id: {}, общих с пользователем по id: {}", id, otherId);
         return userService.getCommonFriends(id, otherId);
     }
-
 }
