@@ -3,51 +3,75 @@ package ru.yandex.practicum.filmorate.controller;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
 @RequestMapping("/users")
 public class UserController {
+    private final UserStorage userStorage;
+    private final UserService userService;
 
-    private Map<Long, User> idToUser = new HashMap<>();
-    private Long idCounter = 1L;
+    public UserController(UserService userService, UserStorage userStorage) {
+        this.userService = userService;
+        this.userStorage = userStorage;
+    }
 
     @PostMapping
     public User create(@RequestBody @Valid User user) {
         log.info("Получен HTTP-запрос на создание пользователя: {}", user);
-        user.setId(idCounter++);
-        user.getName(); // у меня до этого была реализована эта логика проверки (если пустой name, то логин)
-       // в самом классе User в Getter)
-        idToUser.put(user.getId(), user);
+        User createUser = userStorage.create(user);
         log.info("Успешно обработан HTTP-запрос на создание пользователя: {}", user);
-        return user;
+        return createUser;
     }
 
     @GetMapping
     public List<User> getAll() {
         log.info("Получен HTTP-запрос на получение всех пользователей");
-        return new ArrayList<>(idToUser.values());
+        List<User> allUsers = userStorage.getAll();
+        return allUsers;
     }
 
     @PutMapping
-    public User update(@RequestBody User user) {
+    public User update(@RequestBody @Valid User user) {
         log.info("Получен HTTP-запрос на обновление пользователя: {}", user);
-        Long id = user.getId();
-        if (!idToUser.containsKey(id)) {
-            String errorMessage = String.format("Пользователь с id %d не найден", id);
-            log.error(errorMessage);
-            throw new UserNotFoundException(errorMessage);
-        }
-        idToUser.put(user.getId(), user);
+        User updateUser = userStorage.update(user);
         log.info("Успешно выполнен HTTP-запрос на обновление пользователя: {}", user);
+        return updateUser;
+    }
+
+    @GetMapping("/{id}")
+    public User getById(@PathVariable Long id) {
+        log.info("Получен HTTP-запрос на получение пользователя по id: {}", id);
+        User user = userStorage.getById(id);
         return user;
     }
 
+    @PutMapping("/{id}/friends/{friendId}")
+    public void createFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        log.info("Получен HTTP-запрос на добавление пользователю с id: {} в друзья пользователя c id: {}", id, friendId);
+        userService.addFriend(id, friendId);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void deleteFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        log.info("Получен HTTP-запрос на удаление из друзей у пользователя с id: {} пользователя c id: {}", id, friendId);
+        userService.deleteFriend(id, friendId);
+    }
+
+    @GetMapping("/{id}/friends")
+    public List<User> getAllFriends(@PathVariable Long id) {
+        log.info("Получен HTTP-запрос на получение списка имеющихся друзей у пользователя по id: {}", id);
+        return userService.getAllFriends(id);
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public List<User> getCommonFriends(@PathVariable Long id, @PathVariable Long otherId) {
+        log.info("Получен HTTP-запрос на получение списка друзей у пользователя по id: {}, общих с пользователем по id: {}", id, otherId);
+        return userService.getCommonFriends(id, otherId);
+    }
 }
