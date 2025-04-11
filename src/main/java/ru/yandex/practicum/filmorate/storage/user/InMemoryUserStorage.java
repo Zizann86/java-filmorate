@@ -16,10 +16,7 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User create(User user) {
-        if (idToUser.values().stream().anyMatch(existingUser  ->
-                existingUser.getLogin().equals(user.getLogin()) || existingUser.getEmail().equals(user.getEmail()))) {
-            throw new IllegalArgumentException("Пользователь с таким логином или электронной почтой уже существует.");
-        }
+        user.getName();
         user.setId(idCounter++);
         idToUser.put(user.getId(), user);
         return user;
@@ -53,5 +50,4 @@ public class InMemoryUserStorage implements UserStorage {
                     throw new UserNotFoundException(errorMessage);
                 });
     }
-
 }

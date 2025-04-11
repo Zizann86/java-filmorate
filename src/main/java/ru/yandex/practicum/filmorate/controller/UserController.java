@@ -74,4 +74,5 @@ public class UserController {
         log.info("Получен HTTP-запрос на получение списка друзей у пользователя по id: {}, общих с пользователем по id: {}", id, otherId);
         return userService.getCommonFriends(id, otherId);
     }
+
 }
