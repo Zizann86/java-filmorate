@@ -43,7 +43,7 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public Optional<User> getById(Long id) {
-        return idToUser .values().stream()
+        return idToUser.values().stream()
                 .filter(user -> Objects.equals(user.getId(), id))
                 .findFirst();
     }
