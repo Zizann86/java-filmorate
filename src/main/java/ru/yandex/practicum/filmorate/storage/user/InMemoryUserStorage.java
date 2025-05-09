@@ -42,12 +42,9 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User getById(Long id) {
-        return idToUser.values().stream().filter(user -> Objects.equals(user.getId(), id)).findFirst().orElseThrow(
-                () -> {
-                    String errorMessage = String.format("Пользователь с id %d не найден", id);
-                    log.error(errorMessage);
-                    throw new UserNotFoundException(errorMessage);
-                });
+    public Optional<User> getById(Long id) {
+        return idToUser .values().stream()
+                .filter(user -> Objects.equals(user.getId(), id))
+                .findFirst();
     }
 }

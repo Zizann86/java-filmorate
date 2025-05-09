@@ -42,12 +42,9 @@ public class InMemoryFilmStorage implements FilmStorage {
         return film;
     }
 
-    public Film getFilmById(Long id) {
-        return idToFilm.values().stream().filter(film -> Objects.equals(film.getId(), id)).findFirst().orElseThrow(
-                () -> {
-                    String errorMessage = String.format("Пользователь с id %d не найден", id);
-                    log.error(errorMessage);
-                    throw new UserNotFoundException(errorMessage);
-                });
+    public Optional<Film> getFilmById(Long id) {
+        return idToFilm.values().stream()
+                .filter(film -> Objects.equals(film.getId(), id))
+                .findFirst();
     }
 }

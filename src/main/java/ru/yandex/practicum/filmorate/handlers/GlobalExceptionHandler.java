@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import org.springframework.validation.ObjectError;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -43,11 +45,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiError handler(Exception e) {
-        log.error("Внутренняя ошибка сервера: {}", e.getMessage());
+        log.error("Внутренняя ошибка сервера: {}", e.getMessage(), e);
         return ApiError.builder()
                 .errorCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .description("Внутренняя ошибка сервера")
                 .build();
     }
-
 }
