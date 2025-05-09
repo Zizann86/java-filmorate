@@ -75,7 +75,7 @@ public class UserService {
         List<Long> commonFriendIds = userFriends.stream()
                 .filter(otherUserFriends::contains)
                 .collect(Collectors.toList());
-        List<User> commonFriends = userRepository.getCommonFriends(user.getId(), otherUser .getId());
+        List<User> commonFriends = userRepository.getCommonFriends(user.getId(), otherUser.getId());
         List<UserResponseDto> commonFriendsDto = commonFriends.stream()
                 .map(userMapper::toUseResponseDto)
                 .collect(Collectors.toList());
