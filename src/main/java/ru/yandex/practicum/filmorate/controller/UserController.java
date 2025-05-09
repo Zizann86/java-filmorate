@@ -24,7 +24,7 @@ public class UserController {
     public UserResponseDto create(@RequestBody @Valid UserCreateDto user) {
         log.info("Получен HTTP-запрос на создание пользователя: {}", user);
         UserResponseDto createdUser  = userService.create(user);
-        log.info("Успешно обработан HTTP-запрос на создание пользователя: {}", createdUser );
+        log.info("Успешно обработан HTTP-запрос на создание пользователя: {}", createdUser);
         return createdUser;
     }
 
@@ -41,7 +41,7 @@ public class UserController {
         log.info("Данные для обновления: {}", user);
         UserResponseDto updatedUser  = userService.update(user);
         log.info("Успешно выполнен HTTP-запрос на обновление пользователя");
-        return updatedUser ;
+        return updatedUser;
     }
 
     @GetMapping("/{id}")
