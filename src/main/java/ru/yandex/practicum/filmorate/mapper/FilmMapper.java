@@ -108,7 +108,6 @@ public class FilmMapper {
         return genres.stream()
                 .filter(Objects::nonNull)
                 .map(genreMapper::mapToGenre)
-                .distinct()
                 .collect(Collectors.toSet());
     }
 }

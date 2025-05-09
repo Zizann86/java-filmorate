@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dal.RatingRepository;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Rating;
 
@@ -28,7 +28,7 @@ public class FilmRowMapper implements RowMapper<Film> {
         film.setDuration(rs.getLong("duration"));
         Long mpaId = rs.getLong("rating");
         Rating rating = ratingRepository.getRatingById(mpaId)
-                .orElseThrow(() -> new UserNotFoundException("MPA рейтинг не найден по id: " + mpaId));
+                .orElseThrow(() -> new NotFoundException("MPA рейтинг не найден по id: " + mpaId));
         film.setMpa(rating);
         log.info("Сопоставленный фильм: {}", film);
         return film;

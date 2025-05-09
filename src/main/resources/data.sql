@@ -1,43 +1,26 @@
-INSERT INTO ratings(name)
-SELECT 'G'
-WHERE NOT EXISTS (SELECT 1 FROM ratings WHERE name = 'G');
+MERGE INTO ratings AS r
+    USING (VALUES
+               (1, 'G'),
+               (2, 'PG'),
+               (3, 'PG-13'),
+               (4, 'R'),
+               (5, 'NC-17')
+    ) AS u (id, name)
+    ON r.id = u.id
+    WHEN MATCHED THEN
+        UPDATE SET r.name = u.name
+    WHEN NOT MATCHED THEN
+        INSERT (id, name) VALUES (u.id, u.name);
 
-INSERT INTO ratings(name)
-SELECT 'PG'
-WHERE NOT EXISTS (SELECT 1 FROM ratings WHERE name = 'PG');
-
-INSERT INTO ratings(name)
-SELECT 'PG-13'
-WHERE NOT EXISTS (SELECT 1 FROM ratings WHERE name = 'PG-13');
-
-INSERT INTO ratings(name)
-SELECT 'R'
-WHERE NOT EXISTS (SELECT 1 FROM ratings WHERE name = 'R');
-
-INSERT INTO ratings(name)
-SELECT 'NC-17'
-WHERE NOT EXISTS (SELECT 1 FROM ratings WHERE name = 'NC-17');
-
-INSERT INTO genres(name)
-SELECT 'Комедия'
-WHERE NOT EXISTS (SELECT 1 FROM genres WHERE name = 'Комедия');
-
-INSERT INTO genres(name)
-SELECT 'Драма'
-WHERE NOT EXISTS (SELECT 1 FROM genres WHERE name = 'Драма');
-
-INSERT INTO genres(name)
-SELECT 'Мультфильм'
-WHERE NOT EXISTS (SELECT 1 FROM genres WHERE name = 'Мультфильм');
-
-INSERT INTO genres(name)
-SELECT 'Триллер'
-WHERE NOT EXISTS (SELECT 1 FROM genres WHERE name = 'Триллер');
-
-INSERT INTO genres(name)
-SELECT 'Документальный'
-WHERE NOT EXISTS (SELECT 1 FROM genres WHERE name = 'Документальный');
-
-INSERT INTO genres(name)
-SELECT 'Боевик'
-WHERE NOT EXISTS (SELECT 1 FROM genres WHERE name = 'Боевик');
+MERGE INTO genres AS g
+    USING (VALUES
+               ('Комедия'),
+               ('Драма'),
+               ('Мультфильм'),
+               ('Триллер'),
+               ('Документальный'),
+               ('Боевик')
+    ) AS new_genres(name)
+    ON g.name = new_genres.name
+    WHEN NOT MATCHED THEN
+        INSERT (name) VALUES (new_genres.name);

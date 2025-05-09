@@ -25,8 +25,8 @@ public class FilmRepository extends BaseRepository<Film> implements FilmStorage 
     private static final String INSERT_GENRE = "INSERT INTO film_genres (film_id, genre_id) VALUES (?, ?)";
     private static final String ADD_LIKE = "INSERT INTO likes (film_id, user_id) VALUES (?, ?)";
     private static final String DELETE_LIKE = "DELETE FROM likes WHERE film_id = ? AND user_id = ?";
-    private static final String CHEK_MPA = "SELECT COUNT(*) FROM ratings WHERE id = ?";
-    private static final String CHEK_GENRE = "SELECT COUNT(*) FROM genres WHERE genre_id = ?";
+    private static final String CHEСK_MPA = "SELECT COUNT(*) FROM ratings WHERE id = ?";
+    private static final String CHEСK_GENRE = "SELECT COUNT(*) FROM genres WHERE genre_id = ?";
     private static final String GET_GENRE_BY_ID = "SELECT g.* FROM genres g " +
             "JOIN film_genres fg ON g.genre_id = fg.genre_id " +
             "WHERE fg.film_id = ?";
@@ -88,12 +88,12 @@ public class FilmRepository extends BaseRepository<Film> implements FilmStorage 
     }
 
     public boolean existsByRatingId(long ratingId) {
-        Integer count = jdbc.queryForObject(CHEK_MPA, new Object[]{ratingId}, Integer.class);
+        Integer count = jdbc.queryForObject(CHEСK_MPA, new Object[]{ratingId}, Integer.class);
         return count != null && count > 0;
     }
 
     public boolean genreExists(long genreId) {
-        Integer count = jdbc.queryForObject(CHEK_GENRE, new Object[]{genreId}, Integer.class);
+        Integer count = jdbc.queryForObject(CHEСK_GENRE, new Object[]{genreId}, Integer.class);
         return count != null && count > 0;
     }
 

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.dto.RatingDto;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.service.RatingService;
 
 import java.util.Collection;
@@ -25,6 +25,6 @@ public class RatingController {
     @GetMapping("/{id}")
     public RatingDto getMpaById(@PathVariable long id) {
         return ratingService.findRatingById(id)
-                .orElseThrow(() -> new UserNotFoundException("Rating not found with id " + id));
+                .orElseThrow(() -> new NotFoundException("Rating not found with id " + id));
     }
 }

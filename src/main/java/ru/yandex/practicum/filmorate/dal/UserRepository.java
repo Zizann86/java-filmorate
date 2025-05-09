@@ -5,7 +5,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
@@ -85,7 +85,7 @@ public class UserRepository extends BaseRepository<User> implements UserStorage 
             return user;
         } catch (Exception e) {
             log.error("Ошибка при обновлении пользователя с ID {}: {}", user.getId(), e.getMessage());
-            throw new UserNotFoundException("Не удалось обновить данные пользователя");
+            throw new NotFoundException("Не удалось обновить данные пользователя");
         }
     }
 
@@ -109,7 +109,7 @@ public class UserRepository extends BaseRepository<User> implements UserStorage 
     public Collection<User> getUserFriends(long userId) {
         if (!doesUserExist(userId)) {
             log.warn("Пользователь с id={} не найден.", userId);
-            throw new UserNotFoundException("Пользователь с id=" + userId + " не найден.");
+            throw new NotFoundException("Пользователь с id=" + userId + " не найден.");
         }
         try {
             return jdbc.query(GET_USER_FRIENDS, mapper, userId);

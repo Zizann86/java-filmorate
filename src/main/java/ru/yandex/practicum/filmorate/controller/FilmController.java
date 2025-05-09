@@ -1,8 +1,8 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.dto.FilmCreateDto;
 import ru.yandex.practicum.filmorate.dto.FilmResponseDto;
@@ -14,12 +14,9 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/films")
+@RequiredArgsConstructor
 public class FilmController {
     private final FilmService filmService;
-
-    public FilmController(@Autowired FilmService filmService) {
-        this.filmService = filmService;
-    }
 
     @PostMapping
     public FilmResponseDto create(@RequestBody @Valid FilmCreateDto film) {
@@ -32,8 +29,7 @@ public class FilmController {
     @GetMapping
     public List<FilmResponseDto> getAll() {
         log.info("Получен HTTP-запрос на получение всех фильмов");
-        List<FilmResponseDto> allFilms = filmService.getAll();
-        return allFilms;
+        return filmService.getAll();
     }
 
     @PutMapping
@@ -47,8 +43,7 @@ public class FilmController {
     @GetMapping("/{id}")
     public FilmResponseDto getById(@PathVariable Long id) {
         log.info("Получен HTTP-запрос на получение фильма по id: {}", id);
-        FilmResponseDto film = filmService.getById(id);
-        return film;
+        return filmService.getById(id);
     }
 
     @PutMapping("/{id}/like/{userId}")

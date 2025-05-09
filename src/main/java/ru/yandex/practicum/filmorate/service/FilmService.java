@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dal.FilmRepository;
 import ru.yandex.practicum.filmorate.dto.*;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.mapper.FilmMapper;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
@@ -29,11 +29,11 @@ public class FilmService {
     public FilmResponseDto create(FilmCreateDto film) {
         log.info("Получен HTTP-запрос на добавление фильма: {}", film);
         if (!filmRepository.existsByRatingId(film.getMpa().getId())) {
-            throw new UserNotFoundException("Рейтинг с ID " + film.getMpa().getId() + " не существует.");
+            throw new NotFoundException("Рейтинг с ID " + film.getMpa().getId() + " не существует.");
         }
         for (GenreDto genre : film.getGenres()) {
             if (!filmRepository.genreExists(genre.getId())) {
-                throw new UserNotFoundException("Жанр с ID " + genre.getId() + " не существует.");
+                throw new NotFoundException("Жанр с ID " + genre.getId() + " не существует.");
             }
         }
         Film filmToCreate = filmMapper.toFilm(film);
@@ -59,7 +59,7 @@ public class FilmService {
         Long filmId = request.getId();
         log.info("Получен HTTP-запрос на обновление фильма с ID: {}", filmId);
         Film existingFilm = filmRepository.getFilmById(filmId)
-                .orElseThrow(() -> new UserNotFoundException("Фильм с ID " + filmId + " не найден"));
+                .orElseThrow(() -> new NotFoundException("Фильм с ID " + filmId + " не найден"));
         filmMapper.updateFilmFields(existingFilm, request);
         existingFilm = filmRepository.update(existingFilm);
         log.info("Успешно выполнен HTTP-запрос на обновление фильма: {}", existingFilm);
@@ -69,7 +69,7 @@ public class FilmService {
     public FilmResponseDto getById(Long id) {
         log.info("Получен HTTP-запрос на получение фильма по id: {}", id);
         Film film = filmRepository.getFilmById(id)
-                .orElseThrow(() -> new UserNotFoundException("Фильм с id " + id + " не найден"));
+                .orElseThrow(() -> new NotFoundException("Фильм с id " + id + " не найден"));
         Set<Genre> genres = filmRepository.getGenresByFilmId(film.getId());
         film.setGenres(genres);
         FilmResponseDto responseDto = filmMapper.toResponseDto(film);
@@ -79,10 +79,7 @@ public class FilmService {
 
     public void addLike(Long filmId, Long userId) {
         Optional<Film> optionalFilm = filmRepository.getFilmById(filmId);
-        Film film = optionalFilm.orElseThrow(() -> new UserNotFoundException("Такого фильма не существует"));
-        if (userService.getUserById(userId) == null) {
-            throw new UserNotFoundException("Такого пользователя не существует");
-        }
+        Film film = optionalFilm.orElseThrow(() -> new NotFoundException("Такого фильма не существует"));
         if (userId != null) {
             filmRepository.addLike(filmId, userId);
             log.info("Лайк к фильму успешно добавлен: {}", film);
@@ -91,10 +88,7 @@ public class FilmService {
 
     public void deleteLike(Long filmId, Long userId) {
         Optional<Film> optionalFilm = filmRepository.getFilmById(filmId);
-        Film film = optionalFilm.orElseThrow(() -> new UserNotFoundException("Такого фильма не существует"));
-        if (userService.getUserById(userId) == null) {
-            throw new UserNotFoundException("Такого пользователя не существует");
-        }
+        Film film = optionalFilm.orElseThrow(() -> new NotFoundException("Такого фильма не существует"));
         if (userId != null) {
             film.getLikes().remove(userId);
             log.info("Лайк к фильму успешно удален {}", film);
@@ -104,11 +98,7 @@ public class FilmService {
     public List<FilmResponseDto> mostPopularFilms(int count) {
         log.info("Выводим {} самых популярных фильмов", count);
         List<Film> list = filmRepository.getTopFilms(count).stream()
-                .sorted((i, j) -> j.getLikes().size() - i.getLikes().size())
                 .collect(Collectors.toList());
-        if (count > list.size()) {
-            count = list.size();
-        }
         return list.stream()
                 .limit(count)
                 .map(filmMapper::toResponseDto)

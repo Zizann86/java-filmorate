@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.dto.GenreDto;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.service.GenreService;
 
 import java.util.Collection;
@@ -26,6 +26,6 @@ public class GenreController {
     @GetMapping("/{id}")
     public GenreDto getGenreById(@PathVariable int id) {
         return genreService.findGenreById(id)
-                .orElseThrow(() -> new UserNotFoundException("Genre not found with id " + id));
+                .orElseThrow(() -> new NotFoundException("Genre not found with id " + id));
     }
 }
