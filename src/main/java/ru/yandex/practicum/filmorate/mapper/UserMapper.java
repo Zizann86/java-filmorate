@@ -30,19 +30,19 @@ public class UserMapper {
         );
     }
 
-    public static User updateUserFields(UserUpdateDto request, User existingUser ) {
+    public static User updateUserFields(UserUpdateDto request, User existingUser) {
         if (request.hasLogin()) {
-            existingUser .setLogin(request.getLogin());
+            existingUser.setLogin(request.getLogin());
         }
         if (request.hasEmail()) {
-            existingUser .setEmail(request.getEmail());
+            existingUser.setEmail(request.getEmail());
         }
         if (request.hasName()) {
-            existingUser .setName(request.getName());
+            existingUser.setName(request.getName());
         }
         if (request.hasBirthday()) {
-            existingUser .setBirthday(request.getBirthday());
+            existingUser.setBirthday(request.getBirthday());
         }
-        return existingUser ;
+        return existingUser;
     }
 }
