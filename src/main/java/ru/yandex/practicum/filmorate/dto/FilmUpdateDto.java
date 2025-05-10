@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -13,10 +13,10 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class Film {
+public class FilmUpdateDto {
     private Long id;
 
     @NotEmpty(message = "Название фильма не должно быть null или пустым")
@@ -30,13 +30,26 @@ public class Film {
 
     @Positive(message = "Продолжительность фильма должна быть положительным числом")
     private Long duration;
-    private Set<Long> likes =  new HashSet<>();
+
+    private Set<Long> likes = new HashSet<>();
 
     @NotNull(message = "Не указан рейтинг MPA")
-    Rating mpa;
-    Set<Genre> genres = new HashSet<>();
+    private RatingDto mpa;
+    private Set<GenreDto> genres = new HashSet<>();
 
-    public void setDescription(String description) {
-        this.description = description != null ? description.trim() : null;
+    public boolean hasName() {
+        return name != null && !name.isBlank();
+    }
+
+    public boolean hasDescription() {
+        return description != null && !description.isBlank();
+    }
+
+    public boolean hasReleaseDate() {
+        return releaseDate != null;
+    }
+
+    public boolean hasDuration() {
+        return duration != null;
     }
 }

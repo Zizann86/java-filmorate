@@ -1,51 +1,51 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.dto.UserCreateDto;
+import ru.yandex.practicum.filmorate.dto.UserResponseDto;
+import ru.yandex.practicum.filmorate.dto.UserUpdateDto;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
-    public UserController(UserService userService, UserStorage userStorage) {
-        this.userService = userService;
-    }
-
-    @PostMapping
-    public User create(@RequestBody @Valid User user) {
+ @PostMapping
+    public UserResponseDto create(@RequestBody @Valid UserCreateDto user) {
         log.info("Получен HTTP-запрос на создание пользователя: {}", user);
-        User createUser = userService.create(user);
-        log.info("Успешно обработан HTTP-запрос на создание пользователя: {}", user);
-        return createUser;
+        UserResponseDto createdUser  = userService.create(user);
+        log.info("Успешно обработан HTTP-запрос на создание пользователя: {}", createdUser);
+        return createdUser;
     }
 
     @GetMapping
-    public List<User> getAll() {
+    public List<UserResponseDto> getAll() {
         log.info("Получен HTTP-запрос на получение всех пользователей");
-        List<User> allUsers = userService.getAll();
+        List<UserResponseDto> allUsers = userService.getAll();
         return allUsers;
     }
 
     @PutMapping
-    public User update(@RequestBody @Valid User user) {
-        log.info("Получен HTTP-запрос на обновление пользователя: {}", user);
-        User updateUser = userService.update(user);
-        log.info("Успешно выполнен HTTP-запрос на обновление пользователя: {}", user);
-        return updateUser;
+    public UserResponseDto update(@RequestBody @Valid UserUpdateDto user) {
+        log.info("Получен HTTP-запрос на обновление пользователя");
+        log.info("Данные для обновления: {}", user);
+        UserResponseDto updatedUser  = userService.update(user);
+        log.info("Успешно выполнен HTTP-запрос на обновление пользователя");
+        return updatedUser;
     }
 
     @GetMapping("/{id}")
-    public User getById(@PathVariable Long id) {
+    public UserResponseDto getById(@PathVariable Long id) {
         log.info("Получен HTTP-запрос на получение пользователя по id: {}", id);
-        User user = userService.getUserById(id);
+        UserResponseDto user = userService.getUserById(id);
         return user;
     }
 
@@ -62,13 +62,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends")
-    public List<User> getAllFriends(@PathVariable Long id) {
+    public List<UserResponseDto> getAllFriends(@PathVariable Long id) {
         log.info("Получен HTTP-запрос на получение списка имеющихся друзей у пользователя по id: {}", id);
         return userService.getAllFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public List<User> getCommonFriends(@PathVariable Long id, @PathVariable Long otherId) {
+    public List<UserResponseDto> getCommonFriends(@PathVariable Long id, @PathVariable Long otherId) {
         log.info("Получен HTTP-запрос на получение списка друзей у пользователя по id: {}, общих с пользователем по id: {}", id, otherId);
         return userService.getCommonFriends(id, otherId);
     }

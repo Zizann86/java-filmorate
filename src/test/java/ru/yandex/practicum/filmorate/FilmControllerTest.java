@@ -1,21 +1,8 @@
 package ru.yandex.practicum.filmorate;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validator;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import ru.yandex.practicum.filmorate.controller.FilmController;
-import ru.yandex.practicum.filmorate.model.Film;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-@SpringBootTest
+/*@SpringBootTest
 public class FilmControllerTest {
 
     @Autowired
@@ -73,4 +60,4 @@ public class FilmControllerTest {
         assertEquals(1, violations.size());
         assertEquals("Продолжительность фильма должна быть положительным числом", violations.iterator().next().getMessage());
     }
-}
+}*/

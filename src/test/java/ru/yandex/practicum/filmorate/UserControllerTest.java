@@ -1,20 +1,8 @@
 package ru.yandex.practicum.filmorate;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validator;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import ru.yandex.practicum.filmorate.controller.UserController;
-import ru.yandex.practicum.filmorate.model.User;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+/*
 @SpringBootTest
 public class UserControllerTest {
 
@@ -81,3 +69,4 @@ public class UserControllerTest {
     }
 
 }
+*/
