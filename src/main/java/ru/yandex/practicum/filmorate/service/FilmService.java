@@ -16,13 +16,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class FilmService {
-    private final UserService userService;
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;
 
     public FilmService(@Autowired FilmRepository filmRepository, @Autowired UserService userService, @Autowired FilmMapper filmMapper) {
         this.filmRepository = filmRepository;
-        this.userService = userService;
         this.filmMapper = filmMapper;
     }
 
@@ -100,7 +98,6 @@ public class FilmService {
         List<Film> list = filmRepository.getTopFilms(count).stream()
                 .collect(Collectors.toList());
         return list.stream()
-                .limit(count)
                 .map(filmMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
